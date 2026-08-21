@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { LoadingScreen } from "./components/LoadingScreen";
-import ganiyat_headshot from "./assets/ganiyat_headshot.jpg";
+import ganiyat_headshot from "./assets/ganiyat_bw.jpg";
 import reunite_dashboard from "./assets/reunite_dashboard.jpeg";
 import mindease_dashboard from "./assets/mindease_dashboard.jpeg";
 import emotion_demo from "./assets/emotion_demo.png";
@@ -9,6 +9,32 @@ import eid from "./assets/eid.jpg";
 import excursion from "./assets/excursion.jpg";
 import findout from "./assets/findout.jpg";
 import signout from "./assets/signout.jpg";
+
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp,
+} from "firebase/firestore";
+
+// TODO: replace with your own project's config from the Firebase console
+const firebaseConfig = {
+  apiKey: "AIzaSyDzub7ORqdQlmF4rk4YwHOeDiqMwlta-H4",
+  authDomain: "portfolio-9d3b0.firebaseapp.com",
+  databaseURL: "https://portfolio-9d3b0-default-rtdb.firebaseio.com",
+  projectId: "portfolio-9d3b0",
+  storageBucket: "portfolio-9d3b0.firebasestorage.app",
+  messagingSenderId: "1042068850527",
+  appId: "1:1042068850527:web:163c509a412bb80eb758ea",
+  measurementId: "G-VP0NDMJD8M"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
 
 /* ------------------------------------------------------------------ */
 /* Typewriter hook (unchanged)                                         */
@@ -58,7 +84,7 @@ const STOPS_WORK = [
   { key: "nest", label: "Crow's nest", height: "210 FT", kind: "hero", tag: "Flagship project", title: "MindEase", sub: "AI-powered student stress management system", body: "Final-year project: a full-stack mental wellness app with conversational support, emotion detection, mood tracking, and guided breathing. Built the React frontend, Spring Boot backend, Python emotion-detection service, auth, database layer, and AI integration as a modular system.", tech: ["React", "TypeScript", "Spring Boot", "Python", "Flask", "PostgreSQL", "Hugging Face", "Gemini API", "JWT", "Docker"], year: "2025–2026", link: "https://github.com/ghanneeyyah/mindease", image: mindease_dashboard },
   { key: "p2", label: "Upper mast", height: "140 FT", kind: "project", tag: "Solo · ML / Backend", title: "Emotion Detector API", sub: "Emotion classification API from natural-language text", body: "An NLP-powered REST API that classifies text into 28 emotion categories using a fine-tuned transformer model, with confidence scores returned through a FastAPI endpoint.", tech: ["Python", "FastAPI", "PyTorch", "Pandas", "GoEmotions", "REST API"], year: "2026", link: "https://feelings-jar-demo.onrender.com/", image: emotion_demo },
   { key: "p1", label: "Mid mast", height: "90 FT", kind: "project", tag: "Hackathon team", title: "Reunite AI", sub: "AI-powered solution for a real-world problem", body: "Built as part of a hackathon team within a limited timeframe — contributed to the technical implementation and helped turn the initial idea into a functional prototype.", tech: ["AI", "Python", "JavaScript", "REST APIs"], year: "2025", link: "https://frontends-evmq.onrender.com/", image: reunite_dashboard },
-  { key: "deck", label: "The deck", height: "0 FT", kind: "intro", title: "Olaiwon Ganiyat", handle: "ghanneeyyah", sub: "Full-stack developer", body: "Computer science student and full-stack developer who enjoys turning ideas and real-world problems into working software. Usually found at the backend — building APIs, designing databases, and figuring out how to make applications reliable, scalable, and actually useful.", image: ganiyat_headshot },
+  { key: "deck", label: "The deck", height: "0 FT", kind: "intro", title: "Olaiwon Ganiyat", handle: "ghanneeyyah", sub: "Full-stack developer", body: "Computer science student and full-stack developer who enjoys turning ideas and real-world problems into working software. Usually found at the backend — building APIs, designing databases, and figuring out how to make applications reliable, scalable, and actually useful." },
 ];
 
 // Personal face — project screenshots live on the Work face already, so
@@ -297,6 +323,17 @@ function StopWork({ stop, isBottom }) {
               <span key={t} className="text-[10px] font-mono px-2 py-1 border border-white/15 text-white/50">{t}</span>
             ))}
           </div>
+          {stop.link && (
+            <a
+              href={stop.link}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 mt-4 font-mono text-xs tracking-widest hover:opacity-75 transition-opacity"
+              style={{ color: GREEN }}
+            >
+              VIEW PROJECT →
+            </a>
+          )}
         </BracketCard>
       ) : isWip ? (
         <div className="relative border border-dashed px-6 py-6 max-w-md w-full" style={{ borderColor: `${GREEN}66`, background: "rgba(57,255,136,0.03)" }}>
@@ -318,6 +355,17 @@ function StopWork({ stop, isBottom }) {
               <span key={t} className="text-[10px] font-mono px-2 py-1 border border-white/15 text-white/45">{t}</span>
             ))}
           </div>
+          {stop.link && (
+            <a
+              href={stop.link}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 mt-3 font-mono text-xs tracking-widest hover:opacity-75 transition-opacity"
+              style={{ color: GREEN }}
+            >
+              VIEW PROJECT →
+            </a>
+          )}
         </div>
       )}
     </section>
@@ -390,61 +438,80 @@ function StopAbout({ stop, isBottom }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Face 3 — CONNECT stop renderer (unchanged, no images here)          */
+/* Face 3 — CONNECT stop renderer                                      */
 /* ------------------------------------------------------------------ */
 
-// A single comment, rendered as a little ship with blinking green running
-// lights. Body copy sits inside the "cockpit" window.
-function SpaceshipComment({ name, message }) {
+// A tiny ship icon used in the compact "fleet" strip — one per comment, no
+// text attached. Clicking it opens that comment in the single readout panel
+// below, so N comments only ever cost one row of vertical space, not N cards.
+function MiniShip({ active, onClick }) {
   return (
-    <div className="flex items-center gap-3 w-full">
-      <div className="relative shrink-0" style={{ width: 26, height: 44 }}>
-        {/* running lights */}
-        <span
-          className="absolute rounded-full"
-          style={{ top: 4, left: 11, width: 4, height: 4, background: GREEN, animation: "blinkDot 1.6s ease-in-out infinite" }}
-        />
-        <span
-          className="absolute rounded-full"
-          style={{ bottom: 10, left: 2, width: 3, height: 3, background: GREEN, animation: "blinkDot 1.6s ease-in-out infinite", animationDelay: "0.4s" }}
-        />
-        <span
-          className="absolute rounded-full"
-          style={{ bottom: 10, right: 2, width: 3, height: 3, background: GREEN, animation: "blinkDot 1.6s ease-in-out infinite", animationDelay: "0.8s" }}
-        />
-        {/* hull */}
-        <div
-          className="absolute inset-x-0 top-0 bottom-2"
-          style={{
-            background: "linear-gradient(180deg, #2a2f3a 0%, #1a1e26 100%)",
-            border: `1px solid ${GREEN}44`,
-            borderRadius: "50% 50% 20% 20% / 60% 60% 15% 15%",
-          }}
-        />
-        {/* cockpit window */}
-        <div
-          className="absolute rounded-full"
-          style={{ top: 10, left: "50%", transform: "translateX(-50%)", width: 10, height: 10, background: `${GREEN}33`, border: `1px solid ${GREEN}88` }}
-        />
-      </div>
-
-      <div className="flex-1 min-w-0 border border-white/12 bg-white/[0.03] px-4 py-3">
-        <p className="font-mono text-[10px] tracking-widest" style={{ color: GREEN }}>{name.toUpperCase()}</p>
-        <p className="text-sm text-white/70 mt-1 break-words">{message}</p>
-      </div>
-    </div>
+    <button
+      onClick={onClick}
+      aria-label="View this transmission"
+      className="relative shrink-0 transition-transform hover:scale-110"
+      style={{ width: 16, height: 26 }}
+    >
+      {/* nose light, brighter when this is the selected ship */}
+      <span
+        className="absolute rounded-full"
+        style={{ top: 2, left: 6, width: 3, height: 3, background: GREEN, opacity: active ? 1 : 0.4 }}
+      />
+      <div
+        className="absolute inset-x-0 top-0 bottom-1"
+        style={{
+          background: active
+            ? `linear-gradient(180deg, ${GREEN}44 0%, ${GREEN}11 100%)`
+            : "linear-gradient(180deg, #2a2f3a 0%, #1a1e26 100%)",
+          border: `1px solid ${active ? GREEN : `${GREEN}33`}`,
+          borderRadius: "50% 50% 20% 20% / 60% 60% 15% 15%",
+        }}
+      />
+    </button>
   );
 }
 
-function CommentWall({ stop, comments, onAddComment }) {
+function CommentWall({ stop, comments, onAddComment, loading }) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
-  const submit = (e) => {
+  // Keep the readout pointed at the newest transmission as new ones arrive,
+  // unless the visitor has already picked a specific one to read.
+  useEffect(() => {
+    if (comments.length === 0) {
+      setSelectedId(null);
+      return;
+    }
+    setSelectedId((prev) =>
+      prev && comments.some((c) => c.id === prev) ? prev : comments[comments.length - 1].id
+    );
+  }, [comments]);
+
+  const selectedIndex = comments.findIndex((c) => c.id === selectedId);
+  const selected = selectedIndex >= 0 ? comments[selectedIndex] : null;
+
+  const step = (dir) => {
+    if (comments.length === 0) return;
+    const next = (selectedIndex + dir + comments.length) % comments.length;
+    setSelectedId(comments[next].id);
+  };
+
+  const submit = async (e) => {
     e.preventDefault();
-    if (!message.trim()) return;
-    onAddComment({ name: name.trim() || "Anonymous", message: message.trim() });
-    setMessage("");
+    if (!message.trim() || submitting) return;
+    setSubmitting(true);
+    setError("");
+    try {
+      await onAddComment({ name: name.trim() || "Anonymous", message: message.trim() });
+      setMessage("");
+    } catch (err) {
+      setError("Couldn't send that — try again in a moment.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -457,6 +524,7 @@ function CommentWall({ stop, comments, onAddComment }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name (optional)"
+          maxLength={60}
           className="bg-white/[0.03] border border-white/12 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--g)]"
           style={{ "--g": GREEN }}
         />
@@ -465,34 +533,81 @@ function CommentWall({ stop, comments, onAddComment }) {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Say something..."
           rows={3}
+          maxLength={500}
           className="bg-white/[0.03] border border-white/12 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--g)] resize-none"
           style={{ "--g": GREEN }}
         />
+        {error && <p className="text-xs text-red-400/80 font-mono">{error}</p>}
         <button
           type="submit"
-          className="self-end font-mono text-xs tracking-widest px-4 py-2 border transition-colors hover:bg-[var(--g)] hover:text-black"
+          disabled={submitting}
+          className="self-end font-mono text-xs tracking-widest px-4 py-2 border transition-colors hover:bg-[var(--g)] hover:text-black disabled:opacity-50 disabled:pointer-events-none"
           style={{ color: GREEN, borderColor: `${GREEN}66`, "--g": GREEN }}
         >
-          LAUNCH ↑
+          {submitting ? "LAUNCHING…" : "LAUNCH ↑"}
         </button>
       </form>
 
-      <div className="flex flex-col gap-4">
-        {comments.length === 0 ? (
-          <p className="text-center font-mono text-[11px] tracking-widest text-white/30">NO TRANSMISSIONS YET — BE THE FIRST</p>
-        ) : (
-          comments.map((c) => <SpaceshipComment key={c.id} name={c.name} message={c.message} />)
-        )}
-      </div>
+      {loading ? (
+        <p className="text-center font-mono text-[11px] tracking-widest text-white/30">SCANNING FREQUENCY…</p>
+      ) : comments.length === 0 ? (
+        <p className="text-center font-mono text-[11px] tracking-widest text-white/30">NO TRANSMISSIONS YET — BE THE FIRST</p>
+      ) : (
+        <div>
+          <p className="text-center font-mono text-[10px] tracking-widest mb-3" style={{ color: GREEN }}>
+            ⁕ INCOMING FLEET · {comments.length} ⁕
+          </p>
 
-      <p className="text-center font-mono text-[9px] tracking-widest text-white/20 mt-6">
-        NOTE: NOT YET CONNECTED TO A BACKEND — MESSAGES RESET ON REFRESH
-      </p>
+          {/* compact strip — one small ship per comment, click to read it below */}
+          <div className="flex items-end gap-2 overflow-x-auto scrollbar-hide px-1 pb-1">
+            {comments.map((c) => (
+              <MiniShip key={c.id} active={c.id === selectedId} onClick={() => setSelectedId(c.id)} />
+            ))}
+          </div>
+
+          {/* single readout for whichever ship is selected, with prev/next */}
+          {selected && (
+            <div className="flex items-center gap-2 mt-3">
+              <button
+                onClick={() => step(-1)}
+                aria-label="Previous transmission"
+                className="shrink-0 font-mono text-xs px-1.5 py-3 text-white/40 hover:text-[var(--g)] transition-colors disabled:opacity-30"
+                style={{ "--g": GREEN }}
+                disabled={comments.length < 2}
+              >
+                ◀
+              </button>
+
+              <div className="flex-1 min-w-0 border border-white/12 bg-white/[0.03] px-4 py-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-mono text-[10px] tracking-widest truncate" style={{ color: GREEN }}>
+                    {selected.name.toUpperCase()}
+                  </p>
+                  <span className="font-mono text-[9px] text-white/30 shrink-0">
+                    {selectedIndex + 1}/{comments.length}
+                  </span>
+                </div>
+                <p className="text-sm text-white/70 mt-1 break-words">{selected.message}</p>
+              </div>
+
+              <button
+                onClick={() => step(1)}
+                aria-label="Next transmission"
+                className="shrink-0 font-mono text-xs px-1.5 py-3 text-white/40 hover:text-[var(--g)] transition-colors disabled:opacity-30"
+                style={{ "--g": GREEN }}
+                disabled={comments.length < 2}
+              >
+                ▶
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
-function StopConnect({ stop, isBottom, comments, onAddComment }) {
+function StopConnect({ stop, isBottom, comments, onAddComment, commentsLoading }) {
   const isIntro = stop.kind === "connect-intro";
   const isCommentWall = stop.kind === "comment-wall";
 
@@ -523,7 +638,7 @@ function StopConnect({ stop, isBottom, comments, onAddComment }) {
           </div>
         </div>
       ) : isCommentWall ? (
-        <CommentWall stop={stop} comments={comments} onAddComment={onAddComment} />
+        <CommentWall stop={stop} comments={comments} onAddComment={onAddComment} loading={commentsLoading} />
       ) : null}
     </section>
   );
@@ -758,10 +873,37 @@ function ScrollFace({ stops, renderStop, containerRef, isActive, onProgress }) {
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+
+  // Comment wall — backed by Firestore's `comments` collection. `onSnapshot`
+  // keeps this live: any visitor's comment appears for everyone else without
+  // a refresh, and it persists across sessions.
   const [comments, setComments] = useState([]);
-  const addComment = useCallback(({ name, message }) => {
-    setComments((prev) => [...prev, { id: `${Date.now()}-${Math.random()}`, name, message }]);
+  const [commentsLoading, setCommentsLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(collection(db, "comments"), orderBy("createdAt", "asc"));
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        setComments(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        setCommentsLoading(false);
+      },
+      (err) => {
+        console.error("Failed to load comments:", err);
+        setCommentsLoading(false);
+      }
+    );
+    return () => unsubscribe();
   }, []);
+
+  const addComment = useCallback(async ({ name, message }) => {
+    await addDoc(collection(db, "comments"), {
+      name,
+      message,
+      createdAt: serverTimestamp(),
+    });
+  }, []);
+
   const [activeFace, setActiveFace] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [spinKey, setSpinKey] = useState(0);
@@ -996,7 +1138,14 @@ export default function Home() {
               <ScrollFace
                 stops={STOPS_LINKS}
                 renderStop={(s, isBottom) => (
-                  <StopConnect key={s.key} stop={s} isBottom={isBottom} comments={comments} onAddComment={addComment} />
+                  <StopConnect
+                    key={s.key}
+                    stop={s}
+                    isBottom={isBottom}
+                    comments={comments}
+                    onAddComment={addComment}
+                    commentsLoading={commentsLoading}
+                  />
                 )}
                 containerRef={scrollRefs.connect}
                 isActive={activeFace === 2}
