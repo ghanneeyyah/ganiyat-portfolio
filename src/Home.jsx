@@ -3,7 +3,12 @@ import { LoadingScreen } from "./components/LoadingScreen";
 import ganiyat_headshot from "./assets/ganiyat_headshot.jpg";
 import reunite_dashboard from "./assets/reunite_dashboard.jpeg";
 import mindease_dashboard from "./assets/mindease_dashboard.jpeg";
-import portfolio from "./assets/portfolio.png";
+import emotion_demo from "./assets/emotion_demo.png";
+import birthday from "./assets/birthday.jpg";
+import eid from "./assets/eid.jpg";
+import excursion from "./assets/excursion.jpg";
+import findout from "./assets/findout.jpg";
+import signout from "./assets/signout.jpg";
 
 /* ------------------------------------------------------------------ */
 /* Typewriter hook (unchanged)                                         */
@@ -42,28 +47,53 @@ function useTypewriter(text, { speed = 60, startDelay = 0, pauseBeforeLoop = 180
 const GREEN = "#39ff88";
 
 /* ------------------------------------------------------------------ */
-/* Content — three faces of the mast (unchanged)                       */
+/* Content — three faces of the mast.                                  */
+/* Each stop now carries its own `image` (or none, for the wip/deck    */
+/* placeholders) so every renderer can just read `stop.image` instead  */
+/* of a different hardcoded import per JSX branch.                     */
 /* ------------------------------------------------------------------ */
 
 const STOPS_WORK = [
-  { key: "wip", label: "Above the nest", height: "240 FT", kind: "wip", tag: "Currently building", title: "In the works", sub: "Details coming soon", body: "A new build is underway — check back for the full story." },
-  { key: "nest", label: "Crow's nest", height: "210 FT", kind: "hero", tag: "Flagship project", title: "MindEase", sub: "AI-powered student stress management system", body: "Final-year project: a full-stack mental wellness app with conversational support, emotion detection, mood tracking, and guided breathing. Built the React frontend, Spring Boot backend, Python emotion-detection service, auth, database layer, and AI integration as a modular system.", tech: ["React", "TypeScript", "Spring Boot", "Python", "Flask", "PostgreSQL", "Hugging Face", "Gemini API", "JWT", "Docker"], year: "2025–2026", link: "https://github.com/ghanneeyyah/mindease" },
-  { key: "p2", label: "Upper mast", height: "140 FT", kind: "project", tag: "Solo · ML / Backend", title: "Emotion Detector API", sub: "Emotion classification API from natural-language text", body: "An NLP-powered REST API that classifies text into 28 emotion categories using a fine-tuned transformer model, with confidence scores returned through a FastAPI endpoint.", tech: ["Python", "FastAPI", "PyTorch", "Pandas", "GoEmotions", "REST API"], year: "2026", link: "https://github.com/ghanneeyyah/emotion-detector" },
-  { key: "p1", label: "Mid mast", height: "90 FT", kind: "project", tag: "Hackathon team", title: "Reunite AI", sub: "AI-powered solution for a real-world problem", body: "Built as part of a hackathon team within a limited timeframe — contributed to the technical implementation and helped turn the initial idea into a functional prototype.", tech: ["AI", "Python", "JavaScript", "REST APIs"], year: "2025", link: "https://frontends-evmq.onrender.com/" },
-  { key: "deck", label: "The deck", height: "0 FT", kind: "intro", title: "Olaiwon Ganiyat", handle: "ghanneeyyah", sub: "Full-stack developer", body: "Computer science student and full-stack developer who enjoys turning ideas and real-world problems into working software. Usually found at the backend — building APIs, designing databases, and figuring out how to make applications reliable, scalable, and actually useful." },
+  { key: "wip", label: "Above the nest", height: "240 FT", kind: "wip", tag: "Currently building", title: "In the works", sub: "Details coming soon", body: "A new build is underway — check back for the full story.", image: null },
+  { key: "nest", label: "Crow's nest", height: "210 FT", kind: "hero", tag: "Flagship project", title: "MindEase", sub: "AI-powered student stress management system", body: "Final-year project: a full-stack mental wellness app with conversational support, emotion detection, mood tracking, and guided breathing. Built the React frontend, Spring Boot backend, Python emotion-detection service, auth, database layer, and AI integration as a modular system.", tech: ["React", "TypeScript", "Spring Boot", "Python", "Flask", "PostgreSQL", "Hugging Face", "Gemini API", "JWT", "Docker"], year: "2025–2026", link: "https://github.com/ghanneeyyah/mindease", image: mindease_dashboard },
+  { key: "p2", label: "Upper mast", height: "140 FT", kind: "project", tag: "Solo · ML / Backend", title: "Emotion Detector API", sub: "Emotion classification API from natural-language text", body: "An NLP-powered REST API that classifies text into 28 emotion categories using a fine-tuned transformer model, with confidence scores returned through a FastAPI endpoint.", tech: ["Python", "FastAPI", "PyTorch", "Pandas", "GoEmotions", "REST API"], year: "2026", link: "https://feelings-jar-demo.onrender.com/", image: emotion_demo },
+  { key: "p1", label: "Mid mast", height: "90 FT", kind: "project", tag: "Hackathon team", title: "Reunite AI", sub: "AI-powered solution for a real-world problem", body: "Built as part of a hackathon team within a limited timeframe — contributed to the technical implementation and helped turn the initial idea into a functional prototype.", tech: ["AI", "Python", "JavaScript", "REST APIs"], year: "2025", link: "https://frontends-evmq.onrender.com/", image: reunite_dashboard },
+  { key: "deck", label: "The deck", height: "0 FT", kind: "intro", title: "Olaiwon Ganiyat", handle: "ghanneeyyah", sub: "Full-stack developer", body: "Computer science student and full-stack developer who enjoys turning ideas and real-world problems into working software. Usually found at the backend — building APIs, designing databases, and figuring out how to make applications reliable, scalable, and actually useful.", image: ganiyat_headshot },
 ];
 
+// Personal face — project screenshots live on the Work face already, so
+// this stays focused on the person: overview, hobbies, and a scattered
+// gallery of photos, all under a space theme. Swap placeholder text/photos
+// for the real thing once you send it.
 const STOPS_ABOUT = [
-  { key: "frame3", label: "Frame 03", height: "SCAN 100%", kind: "frame", tag: "Live project", title: "MindEase — dashboard", body: "" },
-  { key: "frame2", label: "Frame 02", height: "SCAN 66%", kind: "frame", tag: "Live project", title: "Emotion Detector API", body: "" },
-  { key: "frame1", label: "Frame 01", height: "SCAN 33%", kind: "frame", tag: "This site", title: "Portfolio — the build you're looking at", body: "" },
-  { key: "photo", label: "Ship's log", height: "SCAN 0%", kind: "photo-intro", title: "Behind the code", sub: "Full-stack developer", body: "I am a cracked dev" },
+  {
+    key: "gallery", label: "Field photos", height: "SCAN 100%", kind: "gallery",
+    photos: [
+      { key: "g1", rotate: -6, caption: "20th birthday", src: birthday },
+      { key: "g2", rotate: 4, caption: "Eid celebration", src: eid },
+      { key: "g3", rotate: -3, caption: "Nature excursion", src: excursion },
+      { key: "g4", rotate: 7, caption: "Discovery day", src: findout },
+      { key: "g5", rotate: -8, caption: "Sign-out", src: signout },
+    ],
+  },
+  {
+    key: "hobbies", label: "Off-duty log", height: "SCAN 66%", kind: "text-card", tag: "Hobbies",
+    title: "When I'm not shipping code,",
+    body: "I’m probably reading. I’m an avid reader who believes in escaping reality when things get tough, and my safe space is somewhere between thriller and romance novels. \n I genuinely believe that humans are born creative. Our creativity may not always conform to society’s definition of what creativity is, but either way, I believe we’re all creatives. I’m on a journey to explore the different ways people express that creativity. So, apart from reading, I watch movies, anime, and short films, and I read poetry and articles. When I’m not reading or watching something, I’m probably taking a long stroll, trying to make sense of my own creative mind. And I love having conversations with people, especially when they involve asking complex questions and exploring ideas that make me think.",
+  },
+  {
+    key: "overview", label: "Personal log", height: "SCAN 33%", kind: "text-card", tag: "Personal overview",
+    title: "A bit more about me",
+    body: "I love solving problems, especially problems that have a direct impact on people’s safety and everyday lives. Ever since I was a kid, I’ve been curious about how people live, what challenges they face, and how those challenges could be solved in ways that actually fit into their lifestyles. That curiosity eventually led me to technology. I realised that technology is deeply woven into the way people live, work, communicate, and experience the world, and I wanted to be part of creating solutions that make those experiences better. I’m especially drawn to problems that sit at the intersection of people and technology, problems that require me to understand not just *what* needs to be built, but *why* it needs to exist in the first place. Right now, I’m exploring tourism and the problems within it, particularly how technology can make travelling and experiencing new places safer, easier, and more meaningful.",
+  },
+  { key: "photo", label: "Ship's log", height: "SCAN 0%", kind: "photo-intro", title: "Behind the code", sub: "Full-stack developer", body: "I am a cracked dev", image: ganiyat_headshot },
 ];
 
+// Project quick-links now live on the Work face (each project card links
+// out directly), so this face is just: contact info at the bottom, and a
+// live comment wall above it.
 const STOPS_LINKS = [
-  { key: "projlink3", label: "Signal 03", height: "92%", kind: "project-link", title: "MindEase", desc: "Flagship project — AI-powered student stress management system.", href: "https://github.com/ghanneeyyah/mindease" },
-  { key: "projlink2", label: "Signal 02", height: "60%", kind: "project-link", title: "Emotion Detector API", desc: "Emotion classification API built on the GoEmotions dataset.", href: "https://github.com/ghanneeyyah/emotion-detector" },
-  { key: "projlink1", label: "Signal 01", height: "30%", kind: "project-link", title: "Reunite AI", desc: "Hackathon build — AI-powered solution shipped under time pressure.", href: "https://frontends-evmq.onrender.com/" },
+  { key: "comments", label: "Open frequency", height: "100%", kind: "comment-wall", title: "Leave a transmission", sub: "Say hello — it lands as a ship on the wall below" },
   {
     key: "connect-intro", label: "Open channel", height: "0%", kind: "connect-intro", title: "Let's connect", sub: "Reach me here",
     links: [
@@ -104,6 +134,73 @@ function BracketCard({ children, accent }) {
   );
 }
 
+// Twinkling star backdrop, used only behind the About face.
+function Starfield() {
+  const stars = React.useMemo(
+    () =>
+      Array.from({ length: 40 }).map((_, i) => ({
+        key: i,
+        top: (i * 37) % 100,
+        left: (i * 53) % 100,
+        size: 1 + (i % 3),
+        delay: (i % 6) * 0.4,
+        duration: 2 + (i % 4),
+      })),
+    []
+  );
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {stars.map((s) => (
+        <span
+          key={s.key}
+          className="absolute rounded-full bg-white"
+          style={{
+            top: `${s.top}%`,
+            left: `${s.left}%`,
+            width: s.size,
+            height: s.size,
+            opacity: 0.5,
+            animation: `twinkleStar ${s.duration}s ease-in-out infinite`,
+            animationDelay: `${s.delay}s`,
+          }}
+        />
+      ))}
+      {/* a couple of distant planets for depth */}
+      <div
+        className="absolute rounded-full"
+        style={{ top: "12%", right: "10%", width: 46, height: 46, background: `radial-gradient(circle at 35% 30%, ${GREEN}55, transparent 70%)`, opacity: 0.5 }}
+      />
+      <div
+        className="absolute rounded-full border"
+        style={{ bottom: "18%", left: "8%", width: 70, height: 70, borderColor: `${GREEN}33`, opacity: 0.4 }}
+      />
+    </div>
+  );
+}
+
+// A single scattered photo, rotated like it's been pinned to a corkboard.
+// Pass a real `src` once you have photos; otherwise it shows a placeholder slot.
+function PolaroidPhoto({ src, caption, rotate = 0 }) {
+  return (
+    <div
+      className="bg-white/[0.04] border border-white/12 p-2 pb-3 w-36 sm:w-40 shrink-0"
+      style={{ transform: `rotate(${rotate}deg)`, boxShadow: "0 8px 16px -6px rgba(0,0,0,0.5)" }}
+    >
+      {src ? (
+        <img src={src} alt={caption} className="w-full h-28 sm:h-32 object-cover" />
+      ) : (
+        <div
+          className="w-full h-28 sm:h-32 flex items-center justify-center text-[9px] font-mono tracking-widest text-white/30"
+          style={{ background: "repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 8px, transparent 8px, transparent 16px)" }}
+        >
+          PHOTO
+        </div>
+      )}
+      <p className="text-[10px] font-mono text-white/40 mt-2 text-center truncate">{caption}</p>
+    </div>
+  );
+}
+
 function Screenshot({ label, src }) {
   if (src) {
     return (
@@ -114,7 +211,13 @@ function Screenshot({ label, src }) {
   }
   return (
     <div className="mt-4 border border-white/10 overflow-hidden">
-      <div className="w-full flex items-center justify-center text-[10px] font-mono tracking-widest text-white/40" style={{ height: 120, background: "repeating-linear-gradient(...)" }}>
+      <div
+        className="w-full flex items-center justify-center text-[10px] font-mono tracking-widest text-white/40"
+        style={{
+          height: 120,
+          background: "repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 10px, transparent 10px, transparent 20px)",
+        }}
+      >
         {label}
       </div>
     </div>
@@ -127,24 +230,46 @@ function IntroBlock({ stop }) {
   const nameDone = name.length >= stop.title.length;
   const roleDone = role.length >= stop.sub.length;
   return (
-    <div className="text-left">
-      <p className="font-mono text-xs tracking-widest text-white/40 mb-2">HI, MY NAME IS</p>
-      <h1 className="text-5xl font-bold text-white leading-tight">
-        {name}
-        <span style={{ color: GREEN, opacity: nameDone ? 0 : 1, animation: "blinkCursor 0.9s step-end infinite" }}>|</span>
-      </h1>
-      {stop.handle && <p className="text-xs mt-2 font-mono text-white/40">@{stop.handle}</p>}
-      <p className="text-lg mt-3 min-h-[1.5em]" style={{ color: GREEN }}>
-        {role}
-        {nameDone && <span style={{ opacity: roleDone ? 0 : 1, animation: "blinkCursor 0.9s step-end infinite" }}>|</span>}
-      </p>
-      <p className="text-sm mt-4 leading-relaxed max-w-sm text-white/60">{stop.body}</p>
+    <div className="w-full flex flex-col-reverse sm:flex-row items-center sm:items-start gap-8 sm:gap-10">
+      <div className="text-left flex-1 min-w-0">
+        <p className="font-mono text-xs tracking-widest text-white/40 mb-2">HI, MY NAME IS</p>
+        <h1 className="text-5xl font-bold text-white leading-tight">
+          {name}
+          <span style={{ color: GREEN, opacity: nameDone ? 0 : 1, animation: "blinkCursor 0.9s step-end infinite" }}>|</span>
+        </h1>
+        {stop.handle && <p className="text-xs mt-2 font-mono text-white/40">@{stop.handle}</p>}
+        <p className="text-lg mt-3 min-h-[1.5em]" style={{ color: GREEN }}>
+          {role}
+          {nameDone && <span style={{ opacity: roleDone ? 0 : 1, animation: "blinkCursor 0.9s step-end infinite" }}>|</span>}
+        </p>
+        <p className="text-sm mt-4 leading-relaxed max-w-sm text-white/60">{stop.body}</p>
+      </div>
+
+      {stop.image && (
+        <div className="relative shrink-0 w-40 h-40 sm:w-44 sm:h-44">
+          {["-top-px -left-px", "-top-px -right-px", "-bottom-px -left-px", "-bottom-px -right-px"].map((pos, i) => (
+            <span
+              key={i}
+              className={`absolute ${pos} w-4 h-4 z-10`}
+              style={{
+                borderTop: i < 2 ? `2px solid ${GREEN}` : "none",
+                borderBottom: i >= 2 ? `2px solid ${GREEN}` : "none",
+                borderLeft: i % 2 === 0 ? `2px solid ${GREEN}` : "none",
+                borderRight: i % 2 === 1 ? `2px solid ${GREEN}` : "none",
+              }}
+            />
+          ))}
+          <div className="w-full h-full border border-white/12 bg-white/[0.03] overflow-hidden">
+            <img src={stop.image} alt={stop.title} className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* Face renderers (unchanged)                                          */
+/* Face 1 — WORK stop renderer                                         */
 /* ------------------------------------------------------------------ */
 
 function StopWork({ stop, isBottom }) {
@@ -166,7 +291,7 @@ function StopWork({ stop, isBottom }) {
           <h2 className="text-3xl font-bold text-white mt-3">{stop.title}</h2>
           <p className="text-sm mt-1" style={{ color: GREEN }}>{stop.sub}</p>
           <p className="text-sm mt-3 leading-relaxed text-white/65">{stop.body}</p>
-          <Screenshot label={`${stop.title} — screenshot`} src={mindease_dashboard} />
+          <Screenshot label={`${stop.title} — screenshot`} src={stop.image} />
           <div className="flex flex-wrap gap-2 mt-4">
             {stop.tech.map((t) => (
               <span key={t} className="text-[10px] font-mono px-2 py-1 border border-white/15 text-white/50">{t}</span>
@@ -179,7 +304,7 @@ function StopWork({ stop, isBottom }) {
           <h3 className="text-xl font-bold text-white mt-3">{stop.title}</h3>
           <p className="text-sm mt-1" style={{ color: GREEN }}>{stop.sub}</p>
           <p className="text-sm mt-2 leading-relaxed text-white/60">{stop.body}</p>
-          <Screenshot label="Work in progress" />
+          <Screenshot label="Work in progress" src={stop.image} />
         </div>
       ) : (
         <div className="relative border border-white/12 bg-white/[0.03] px-6 py-6 max-w-md w-full">
@@ -187,7 +312,7 @@ function StopWork({ stop, isBottom }) {
           <h3 className="text-2xl font-bold text-white mt-2">{stop.title}</h3>
           <p className="text-sm mt-1 text-white/55">{stop.sub}</p>
           <p className="text-sm mt-2 leading-relaxed text-white/60">{stop.body}</p>
-          <Screenshot label={`${stop.title} — screenshot`} src={reunite_dashboard} />
+          <Screenshot label={`${stop.title} — screenshot`} src={stop.image} />
           <div className="flex flex-wrap gap-2 mt-3">
             {stop.tech.map((t) => (
               <span key={t} className="text-[10px] font-mono px-2 py-1 border border-white/15 text-white/45">{t}</span>
@@ -199,8 +324,15 @@ function StopWork({ stop, isBottom }) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Face 2 — ABOUT stop renderer                                        */
+/* ------------------------------------------------------------------ */
+
 function StopAbout({ stop, isBottom }) {
   const isIntro = stop.kind === "photo-intro";
+  const isGallery = stop.kind === "gallery";
+  const isTextCard = stop.kind === "text-card";
+
   return (
     <section id={`stop-${stop.key}`} className={`py-16 flex flex-col items-center ${isBottom ? "pb-24" : ""}`}>
       <span className="font-mono text-[10px] tracking-[0.25em] text-white/35 mb-3">
@@ -209,35 +341,161 @@ function StopAbout({ stop, isBottom }) {
 
       {isIntro ? (
         <div className="text-center max-w-sm">
-          <div
-            className="mx-auto w-32 h-32 rounded-full border overflow-hidden flex items-center justify-center text-[10px] font-mono tracking-widest text-white/40"
-            style={{
-              borderColor: `${GREEN}55`,
-              background: "repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 10px, transparent 10px, transparent 20px)",
-            }}
-          >
+          {stop.image ? (
             <div className="mx-auto w-32 h-32 rounded-full border overflow-hidden" style={{ borderColor: `${GREEN}55` }}>
-              <img src={ganiyat_headshot} alt="Olaiwon Ganiyat" className="w-full h-full object-cover" />
+              <img src={stop.image} alt="Olaiwon Ganiyat" className="w-full h-full object-cover" />
             </div>
-          </div>
+          ) : (
+            <div
+              className="mx-auto w-32 h-32 rounded-full border overflow-hidden flex items-center justify-center text-[10px] font-mono tracking-widest text-white/40"
+              style={{
+                borderColor: `${GREEN}55`,
+                background: "repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 10px, transparent 10px, transparent 20px)",
+              }}
+            >
+              YOUR PHOTO
+            </div>
+          )}
           <h2 className="text-2xl font-bold text-white mt-5">{stop.title}</h2>
           <p className="text-sm mt-1" style={{ color: GREEN }}>{stop.sub}</p>
           <p className="text-sm mt-3 leading-relaxed text-white/60">{stop.body}</p>
         </div>
-      ) : (
+      ) : isGallery ? (
+        <div className="w-full max-w-md">
+          <p className="text-center font-mono text-[10px] tracking-widest mb-6" style={{ color: GREEN }}>
+            ⁕ TRANSMISSION: PHOTO LOG ⁕
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-8">
+            {stop.photos.map((p) => (
+              <PolaroidPhoto key={p.key} src={p.src} caption={p.caption} rotate={p.rotate} />
+            ))}
+          </div>
+        </div>
+      ) : isTextCard ? (
         <BracketCard accent={GREEN}>
           <span className="font-mono text-[10px] tracking-widest px-2 py-1" style={{ color: GREEN, border: `1px solid ${GREEN}55` }}>{stop.tag}</span>
           <h3 className="text-xl font-bold text-white mt-3">{stop.title}</h3>
           <p className="text-sm mt-2 leading-relaxed text-white/60">{stop.body}</p>
-          <Screenshot label={`${stop.title} — screenshot`} src={portfolio} />
+        </BracketCard>
+      ) : (
+        <BracketCard accent={GREEN}>
+          <span className="font-mono text-[10px] tracking-widest px-2 py-1" style={{ color: GREEN, border: `1px solid ${GREEN}55` }}>{stop.tag}</span>
+          <h3 className="text-xl font-bold text-white mt-3">{stop.title}</h3>
+          {stop.body && <p className="text-sm mt-2 leading-relaxed text-white/60">{stop.body}</p>}
+          <Screenshot label={stop.title} src={stop.image} />
         </BracketCard>
       )}
     </section>
   );
 }
 
-function StopConnect({ stop, isBottom }) {
+/* ------------------------------------------------------------------ */
+/* Face 3 — CONNECT stop renderer (unchanged, no images here)          */
+/* ------------------------------------------------------------------ */
+
+// A single comment, rendered as a little ship with blinking green running
+// lights. Body copy sits inside the "cockpit" window.
+function SpaceshipComment({ name, message }) {
+  return (
+    <div className="flex items-center gap-3 w-full">
+      <div className="relative shrink-0" style={{ width: 26, height: 44 }}>
+        {/* running lights */}
+        <span
+          className="absolute rounded-full"
+          style={{ top: 4, left: 11, width: 4, height: 4, background: GREEN, animation: "blinkDot 1.6s ease-in-out infinite" }}
+        />
+        <span
+          className="absolute rounded-full"
+          style={{ bottom: 10, left: 2, width: 3, height: 3, background: GREEN, animation: "blinkDot 1.6s ease-in-out infinite", animationDelay: "0.4s" }}
+        />
+        <span
+          className="absolute rounded-full"
+          style={{ bottom: 10, right: 2, width: 3, height: 3, background: GREEN, animation: "blinkDot 1.6s ease-in-out infinite", animationDelay: "0.8s" }}
+        />
+        {/* hull */}
+        <div
+          className="absolute inset-x-0 top-0 bottom-2"
+          style={{
+            background: "linear-gradient(180deg, #2a2f3a 0%, #1a1e26 100%)",
+            border: `1px solid ${GREEN}44`,
+            borderRadius: "50% 50% 20% 20% / 60% 60% 15% 15%",
+          }}
+        />
+        {/* cockpit window */}
+        <div
+          className="absolute rounded-full"
+          style={{ top: 10, left: "50%", transform: "translateX(-50%)", width: 10, height: 10, background: `${GREEN}33`, border: `1px solid ${GREEN}88` }}
+        />
+      </div>
+
+      <div className="flex-1 min-w-0 border border-white/12 bg-white/[0.03] px-4 py-3">
+        <p className="font-mono text-[10px] tracking-widest" style={{ color: GREEN }}>{name.toUpperCase()}</p>
+        <p className="text-sm text-white/70 mt-1 break-words">{message}</p>
+      </div>
+    </div>
+  );
+}
+
+function CommentWall({ stop, comments, onAddComment }) {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+    onAddComment({ name: name.trim() || "Anonymous", message: message.trim() });
+    setMessage("");
+  };
+
+  return (
+    <div className="w-full max-w-md">
+      <h2 className="text-2xl font-bold text-white text-center">{stop.title}</h2>
+      <p className="text-sm mt-1 mb-6 text-center" style={{ color: GREEN }}>{stop.sub}</p>
+
+      <form onSubmit={submit} className="flex flex-col gap-2 mb-8">
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name (optional)"
+          className="bg-white/[0.03] border border-white/12 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--g)]"
+          style={{ "--g": GREEN }}
+        />
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Say something..."
+          rows={3}
+          className="bg-white/[0.03] border border-white/12 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[var(--g)] resize-none"
+          style={{ "--g": GREEN }}
+        />
+        <button
+          type="submit"
+          className="self-end font-mono text-xs tracking-widest px-4 py-2 border transition-colors hover:bg-[var(--g)] hover:text-black"
+          style={{ color: GREEN, borderColor: `${GREEN}66`, "--g": GREEN }}
+        >
+          LAUNCH ↑
+        </button>
+      </form>
+
+      <div className="flex flex-col gap-4">
+        {comments.length === 0 ? (
+          <p className="text-center font-mono text-[11px] tracking-widest text-white/30">NO TRANSMISSIONS YET — BE THE FIRST</p>
+        ) : (
+          comments.map((c) => <SpaceshipComment key={c.id} name={c.name} message={c.message} />)
+        )}
+      </div>
+
+      <p className="text-center font-mono text-[9px] tracking-widest text-white/20 mt-6">
+        NOTE: NOT YET CONNECTED TO A BACKEND — MESSAGES RESET ON REFRESH
+      </p>
+    </div>
+  );
+}
+
+function StopConnect({ stop, isBottom, comments, onAddComment }) {
   const isIntro = stop.kind === "connect-intro";
+  const isCommentWall = stop.kind === "comment-wall";
+
   return (
     <section id={`stop-${stop.key}`} className={`py-16 flex flex-col items-center ${isBottom ? "pb-24" : ""}`}>
       <span className="font-mono text-[10px] tracking-[0.25em] text-white/35 mb-3">
@@ -264,21 +522,9 @@ function StopConnect({ stop, isBottom }) {
             ))}
           </div>
         </div>
-      ) : (
-        <div className="relative border border-white/12 bg-white/[0.03] px-6 py-6 max-w-md w-full">
-          <h3 className="text-xl font-bold text-white">{stop.title}</h3>
-          <p className="text-sm mt-2 leading-relaxed text-white/60">{stop.desc}</p>
-          <a
-            href={stop.href}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-block mt-4 font-mono text-xs tracking-widest px-3 py-2 border transition-colors hover:bg-[var(--g)] hover:text-black"
-            style={{ color: GREEN, borderColor: `${GREEN}66`, "--g": GREEN }}
-          >
-            VISIT ↗
-          </a>
-        </div>
-      )}
+      ) : isCommentWall ? (
+        <CommentWall stop={stop} comments={comments} onAddComment={onAddComment} />
+      ) : null}
     </section>
   );
 }
@@ -296,8 +542,6 @@ function EngineerCharacter({ progress, onRopeDown }) {
   const trackRef = useRef(null);
   const ropeRAF = useRef(null);
 
-  // Flip the rope button below the character once it's high enough that
-  // an above-placed button would run off the top of the viewport.
   const buttonBelow = progress > 0.85;
 
   const handleRopeClick = (e) => {
@@ -514,6 +758,10 @@ function ScrollFace({ stops, renderStop, containerRef, isActive, onProgress }) {
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+  const [comments, setComments] = useState([]);
+  const addComment = useCallback(({ name, message }) => {
+    setComments((prev) => [...prev, { id: `${Date.now()}-${Math.random()}`, name, message }]);
+  }, []);
   const [activeFace, setActiveFace] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [spinKey, setSpinKey] = useState(0);
@@ -605,6 +853,7 @@ export default function Home() {
           0%, 100% { transform: translateX(-50%) rotate(-3deg); }
           50% { transform: translateX(-50%) rotate(3deg); }
         }
+        @keyframes twinkleStar { 0%,100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.9; transform: scale(1.2); } }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
@@ -649,11 +898,8 @@ export default function Home() {
         </span>
       </div>
 
-      {/* Mast pole + engineer + jump markers — pushed further from the
-          edge and given more top clearance so the ROPE↓ button never
-          runs off-screen near the top of the climb. */}
+      {/* Mast pole + engineer + jump markers */}
       <div className="absolute left-6 sm:left-12 top-32 bottom-10 z-20 flex items-stretch gap-4">
-        {/* the pole itself */}
         <div className="relative w-[2px]">
           <div className="absolute inset-0 bg-white/10" />
           <div
@@ -666,12 +912,10 @@ export default function Home() {
           />
         </div>
 
-        {/* the engineer rides right next to the pole */}
         <div className="relative w-10 pointer-events-auto">
           <EngineerCharacter progress={progress} onRopeDown={handleRopeDown} />
         </div>
 
-        {/* jump-to-stop tick marks */}
         <div className="relative w-3 flex flex-col justify-between items-center">
           {active.stops.slice().reverse().map((s) => (
             <button
@@ -709,9 +953,7 @@ export default function Home() {
         <span className="font-mono text-[9px] tracking-widest text-white/35">STARBOARD</span>
       </button>
 
-      {/* the 3-sided mast content itself — sized to ~70% of the viewport
-          width on laptop/desktop so the content is the clear visual focus,
-          with the rail and rotate controls sitting in the remaining margins. */}
+      {/* the 3-sided mast content itself */}
       <div className="relative z-10 h-full flex justify-center pt-28 pb-6 pl-20 sm:pl-28 pr-16 sm:pr-24">
         <div ref={sceneRef} className="relative w-full sm:w-[70%]" style={{ perspective: 1600, height: "100%" }}>
           <div
@@ -738,6 +980,7 @@ export default function Home() {
               className="absolute inset-0"
               style={{ transform: `rotateY(120deg) translateZ(${radius}px)`, backfaceVisibility: "hidden", pointerEvents: activeFace === 1 ? "auto" : "none" }}
             >
+              <Starfield />
               <ScrollFace
                 stops={STOPS_ABOUT}
                 renderStop={(s, isBottom) => <StopAbout key={s.key} stop={s} isBottom={isBottom} />}
@@ -752,7 +995,9 @@ export default function Home() {
             >
               <ScrollFace
                 stops={STOPS_LINKS}
-                renderStop={(s, isBottom) => <StopConnect key={s.key} stop={s} isBottom={isBottom} />}
+                renderStop={(s, isBottom) => (
+                  <StopConnect key={s.key} stop={s} isBottom={isBottom} comments={comments} onAddComment={addComment} />
+                )}
                 containerRef={scrollRefs.connect}
                 isActive={activeFace === 2}
                 onProgress={setProgress}
