@@ -23,14 +23,14 @@ import {
 
 // TODO: replace with your own project's config from the Firebase console
 const firebaseConfig = {
-  apiKey: "AIzaSyDzub7ORqdQlmF4rk4YwHOeDiqMwlta-H4",
-  authDomain: "portfolio-9d3b0.firebaseapp.com",
-  databaseURL: "https://portfolio-9d3b0-default-rtdb.firebaseio.com",
-  projectId: "portfolio-9d3b0",
-  storageBucket: "portfolio-9d3b0.firebasestorage.app",
-  messagingSenderId: "1042068850527",
-  appId: "1:1042068850527:web:163c509a412bb80eb758ea",
-  measurementId: "G-VP0NDMJD8M"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
