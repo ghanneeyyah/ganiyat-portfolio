@@ -1,16 +1,20 @@
 // Home.jsx
 import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { LoadingScreen } from "./components/LoadingScreen";
+import LazyImage from "./components/LazyImage";
 import DOMPurify from 'dompurify';
-import ganiyat_headshot from "./assets/ganiyat_bw.jpg";
-import reunite_dashboard from "./assets/reunite_dashboard.jpeg";
-import mindease_dashboard from "./assets/mindease_dashboard.jpeg";
-import emotion_demo from "./assets/emotion_demo.png";
-import birthday from "./assets/birthday.JPG";
-import eid from "./assets/eid.JPG";
-import excursion from "./assets/excursion.jpg";
-import findout from "./assets/findout.jpg";
-import signout from "./assets/signout.jpg";
+
+// NOTE: point these at your optimized webp output (see scripts/optimize-images.js).
+// Run `npm run optimize-images` first, which writes to src/assets-optimized/.
+import ganiyat_headshot from "./assets-optimized/ganiyat_bw.webp";
+import reunite_dashboard from "./assets-optimized/reunite_dashboard.webp";
+import mindease_dashboard from "./assets-optimized/mindease_dashboard.webp";
+import emotion_demo from "./assets-optimized/emotion_demo.webp";
+import birthday from "./assets-optimized/birthday.webp";
+import eid from "./assets-optimized/eid.webp";
+import excursion from "./assets-optimized/excursion.webp";
+import findout from "./assets-optimized/findout.webp";
+import signout from "./assets-optimized/signout.webp";
 
 // Firebase is now loaded lazily — see useComments() below — so it never
 // blocks first paint and isn't in the main bundle at all until someone
@@ -199,35 +203,21 @@ const Starfield = React.memo(function Starfield() {
 });
 
 // A single scattered photo, rotated like it's been pinned to a corkboard.
+// Uses LazyImage — IntersectionObserver-based, so it fetches only once the
+// gallery scrolls near the viewport rather than on initial mount (which
+// matters here since all three mast faces stay mounted simultaneously).
 const PolaroidPhoto = React.memo(function PolaroidPhoto({ src, caption, rotate = 0 }) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
   return (
     <div
       className="bg-white/[0.04] border border-white/12 p-1.5 pb-2.5 sm:p-2 sm:pb-3 w-28 sm:w-40 shrink-0"
       style={{ transform: `rotate(${rotate * 0.6}deg)`, boxShadow: "0 8px 16px -6px rgba(0,0,0,0.5)" }}
     >
       {src ? (
-        <>
-          {!imageLoaded && !imageError && (
-            <div className="w-full h-24 sm:h-32 animate-pulse bg-white/5" />
-          )}
-          <img
-            src={src}
-            alt={caption}
-            loading="lazy"
-            decoding="async"
-            className={`w-full h-24 sm:h-32 object-cover ${imageLoaded ? 'block' : 'hidden'}`}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-          />
-          {imageError && (
-            <div className="w-full h-24 sm:h-32 flex items-center justify-center text-[9px] font-mono tracking-widest text-white/30 bg-white/5">
-              Failed to load
-            </div>
-          )}
-        </>
+        <LazyImage
+          src={src}
+          alt={caption}
+          className="w-full h-24 sm:h-32 object-cover"
+        />
       ) : (
         <div
           className="w-full h-24 sm:h-32 flex items-center justify-center text-[9px] font-mono tracking-widest text-white/30"
@@ -241,30 +231,17 @@ const PolaroidPhoto = React.memo(function PolaroidPhoto({ src, caption, rotate =
   );
 });
 
+// Project dashboard / demo screenshots — same LazyImage treatment as the
+// gallery photos.
 const Screenshot = React.memo(function Screenshot({ label, src }) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
   if (src) {
     return (
       <div className="mt-4 border border-white/10 overflow-hidden">
-        {!imageLoaded && !imageError && (
-          <div className="w-full h-32 animate-pulse bg-white/5" />
-        )}
-        <img
+        <LazyImage
           src={src}
           alt={label}
-          loading="lazy"
-          decoding="async"
-          className={`w-full h-auto block ${imageLoaded ? 'block' : 'hidden'}`}
-          onLoad={() => setImageLoaded(true)}
-          onError={() => setImageError(true)}
+          className="w-full h-auto block"
         />
-        {imageError && (
-          <div className="w-full h-32 flex items-center justify-center text-[10px] font-mono tracking-widest text-white/40 bg-white/5">
-            Failed to load image
-          </div>
-        )}
       </div>
     );
   }
@@ -309,7 +286,14 @@ function IntroBlock({ stop }) {
         <div className="relative shrink-0 w-28 h-28 sm:w-44 sm:h-44">
           <CornerBrackets accent={GREEN} size="w-4 h-4" />
           <div className="w-full h-full border border-white/12 bg-white/[0.03] overflow-hidden">
-            <img src={stop.image} alt={stop.title} loading="eager" fetchpriority="high" className="w-full h-full object-cover" />
+            {/* This is the one image genuinely visible on first paint (deck/intro
+                stop of the WORK face) — eager + high priority, no observer wait. */}
+            <LazyImage
+              src={stop.image}
+              alt={stop.title}
+              className="w-full h-full object-cover"
+              eager
+            />
           </div>
         </div>
       )}
@@ -414,7 +398,14 @@ function StopAbout({ stop, isBottom }) {
         <div className="text-center max-w-sm">
           {stop.image ? (
             <div className="mx-auto w-24 h-24 sm:w-32 sm:h-32 rounded-full border overflow-hidden" style={{ borderColor: `${GREEN}55` }}>
-              <img src={stop.image} alt="Olaiwon Ganiyat" loading="lazy" fetchpriority="high" decoding="async" className="w-full h-full object-cover" />
+              {/* Not eager: this face is off-screen behind a 3D rotation on
+                  first load, so it should wait for the IntersectionObserver
+                  like everything else rather than fetching immediately. */}
+              <LazyImage
+                src={stop.image}
+                alt="Olaiwon Ganiyat"
+                className="w-full h-full object-cover rounded-full"
+              />
             </div>
           ) : (
             <div
