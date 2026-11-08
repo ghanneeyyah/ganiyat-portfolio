@@ -5,8 +5,8 @@ import { ArrowOut } from "./Icons";
 import { activeIndex, cardPose, scrollProgress, scrollTargetForCard } from "./wheel";
 
 const LAYOUT = {
-  desktop: { stickyTop: 76, step: 16, radius: 500 },
-  mobile: { stickyTop: 64, step: 30, radius: 260 },
+  desktop: { stickyTop: 92, step: 16, radius: 500 },
+  mobile: { stickyTop: 76, step: 30, radius: 260 },
 };
 
 function ViewLink({ href }) {
