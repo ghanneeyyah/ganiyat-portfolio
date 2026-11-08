@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./portfolio.css";
 import { SECTIONS } from "./data";
 import { useIsMobile, useScrollY } from "./hooks";
 import { Menu } from "./Icons";
+import { nextNavHidden } from "./nav";
 import Hero from "./Hero";
 import About from "./About";
 import Projects from "./Projects";
@@ -25,11 +26,22 @@ export default function OnePage() {
   const scrollY = useScrollY();
   const active = activeSectionAt(scrollY);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
+  const lastY = useRef(0);
+
+  // Hide the bar while scrolling down, bring it back on any scroll up.
+  // It always shows near the top of the page and while the phone menu is open.
+  useEffect(() => {
+    const prevY = lastY.current;
+    lastY.current = scrollY;
+    setNavHidden((hidden) => nextNavHidden({ prevY, y: scrollY, hidden, menuOpen }));
+  }, [scrollY, menuOpen]);
+
   const activeNum = `0${SECTIONS.findIndex((s) => s.id === active) + 1}`;
 
   return (
     <div className="gp">
-      <header className="gp-nav">
+      <header className={`gp-nav${navHidden ? " hide" : ""}`}>
         <div className="gp-nav-row">
           <span className="gp-nav-name">Olaiwon Ganiyat</span>
           {!mobile && (
