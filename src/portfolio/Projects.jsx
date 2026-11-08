@@ -117,17 +117,17 @@ export default function Projects({ mobile, scrollY }) {
 
               return (
                 <button key={p.title} type="button" className="gp-card" style={style} onClick={() => goTo(i)} aria-label={`Show ${p.title}`}>
-                  <span className="gp-card-text">
-                    <span className="gp-card-meta"><span>0{i + 1}</span><span>{p.year}</span></span>
-                    <span className="gp-card-big">{p.title}</span>
-                    <span className="gp-card-sub">{p.sub}</span>
-                  </span>
                   <span className="gp-card-media">
                     {p.shot ? (
                       <img className="gp-shot" src={p.shot} alt="" loading="lazy" decoding="async" />
                     ) : (
                       <span className="gp-soon" aria-hidden="true">04</span>
                     )}
+                  </span>
+                  <span className="gp-card-text">
+                    <span className="gp-card-meta"><span>0{i + 1}</span><span>{p.year}</span></span>
+                    <span className="gp-card-big">{p.title}</span>
+                    <span className="gp-card-sub">{p.sub}</span>
                   </span>
                 </button>
               );

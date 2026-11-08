@@ -110,14 +110,16 @@ body { margin: 0; background: #07061a; }
 .gp-progress span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: var(--text); }
 .gp-wheel { position: relative; flex: 999 1 520px; min-height: 0; }
 .gp-hub { position: absolute; left: -20%; top: 50%; width: 0; height: 0; }
-.gp-card { position: absolute; left: 0; top: -165px; width: 520px; height: 330px; padding: 24px; box-sizing: border-box; border: 0; border-radius: 20px; text-align: left; font-family: Inter, system-ui, sans-serif; cursor: pointer; transform-origin: 0 50%; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); transition: transform 0.35s ease-out, opacity 0.35s; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 20px; }
-.gp-card-text { display: flex; flex-direction: column; min-width: 0; }
+/* Desktop card: screenshot on top, text underneath, close to square so
+   there's no dead space beside the text. */
+.gp-card { position: absolute; left: 0; top: -195px; width: 400px; height: 390px; padding: 14px; box-sizing: border-box; border: 0; border-radius: 20px; text-align: left; font-family: Inter, system-ui, sans-serif; cursor: pointer; transform-origin: 0 50%; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); transition: transform 0.35s ease-out, opacity 0.35s; display: flex; flex-direction: column; gap: 14px; }
+.gp-card-media { display: block; flex: none; height: 220px; border-radius: 12px; overflow: hidden; }
+.gp-card-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 0 4px; }
 .gp-card-meta { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.08em; }
-.gp-card-big { margin-top: auto; font-family: Poppins, sans-serif; font-weight: 500; font-size: clamp(22px, 2.4vw, 34px); line-height: 1.05; letter-spacing: -0.03em; }
-.gp-card-sub { margin-top: 8px; font-size: 12px; line-height: 1.4; }
-.gp-card-media { display: block; min-height: 0; }
+.gp-card-big { font-family: Poppins, sans-serif; font-weight: 500; font-size: 28px; line-height: 1.05; letter-spacing: -0.03em; }
+.gp-card-sub { font-size: 13px; line-height: 1.4; }
 .gp-shot { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block; }
-.gp-soon { display: flex; align-items: center; justify-content: center; height: 100%; font-family: Poppins, sans-serif; font-weight: 600; font-size: 150px; line-height: 1; color: #fbf6c4; }
+.gp-soon { display: flex; align-items: center; justify-content: center; height: 100%; font-family: Poppins, sans-serif; font-weight: 600; font-size: 150px; line-height: 1; color: #fbf6c4; background: rgba(11, 10, 36, 0.12); }
 
 /* experience */
 .gp-xp-title { margin-left: 32px; }
