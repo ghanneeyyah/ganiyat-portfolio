@@ -1,14 +1,8 @@
-import { useState } from 'react'
-import Home from './Home'
+import OnePage from './portfolio/OnePage'
 
+// The previous "mast" design is still in Home.jsx if it's ever needed again.
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <Home/>
-    </>
-  )
+  return <OnePage />
 }
 
 export default App
