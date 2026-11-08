@@ -1,14 +1,9 @@
-import { useState } from 'react'
-import Home from './Home'
+import FolderPortfolio from './folders/FolderPortfolio'
 
+// The previous "mast" design still lives in ./Home.jsx. To switch back,
+// render <Home /> here instead.
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <Home/>
-    </>
-  )
+  return <FolderPortfolio />
 }
 
 export default App
