@@ -38,10 +38,13 @@ export default function OnePage() {
   }, [scrollY, menuOpen]);
 
   const activeNum = `0${SECTIONS.findIndex((s) => s.id === active) + 1}`;
+  // At the very top the bar sits flat inside the hero panel, as in the design.
+  // Anywhere else it floats with its own background so it stays readable.
+  const flat = scrollY < 40 && !menuOpen;
 
   return (
     <div className="gp">
-      <header className={`gp-nav${navHidden ? " hide" : ""}`}>
+      <header className={`gp-nav ${flat ? "flat" : "float"}${navHidden ? " hide" : ""}`}>
         <div className="gp-nav-row">
           <a className="gp-nav-name" href="#profile">ghanneeyyah</a>
           {!mobile && (
@@ -54,7 +57,7 @@ export default function OnePage() {
             </nav>
           )}
           <span className="gp-nav-end">
-            <span className="gp-num">{activeNum} / 05</span>
+            <span className="gp-num">{activeNum}</span>
             {mobile && (
               <button type="button" className="gp-burger" aria-expanded={menuOpen} aria-label="Menu" onClick={() => setMenuOpen((o) => !o)}>
                 <Menu />
