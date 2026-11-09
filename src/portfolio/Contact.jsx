@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LINKS, NOTE_COLOURS } from "./data";
+import { freshNoteIds } from "./notes";
 import { useSeen } from "./hooks";
 import { LinkIcon } from "./Icons";
 import { useComments } from "./useComments";
@@ -19,6 +20,16 @@ export default function Contact({ mobile }) {
   const lastSent = useRef(0);
 
   const notes = comments.slice(-12).reverse();
+
+  // Notes that arrive after the wall first loads drop in from above.
+  const seenIds = useRef(null);
+  const [dropping, setDropping] = useState(() => new Set());
+  useEffect(() => {
+    if (loading) return;
+    const { fresh, seen: next } = freshNoteIds(seenIds.current, comments.map((c) => c.id));
+    seenIds.current = next;
+    if (fresh.length) setDropping((prev) => new Set([...prev, ...fresh]));
+  }, [comments, loading]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -100,7 +111,7 @@ export default function Contact({ mobile }) {
             {error && <p className="gp-muted small">{error}</p>}
             {!loading && !error && notes.length === 0 && <p className="gp-muted small">No notes yet. Be the first.</p>}
             {notes.map((n, i) => (
-              <span key={n.id} className="gp-note" style={{ background: NOTE_COLOURS[i % NOTE_COLOURS.length], rotate: `${[-4, 3, -2, 5, -3][i % 5]}deg` }}>
+              <span key={n.id} className={`gp-note${dropping.has(n.id) ? " drop" : ""}`} style={{ background: NOTE_COLOURS[i % NOTE_COLOURS.length], rotate: `${[-4, 3, -2, 5, -3][i % 5]}deg` }}>
                 <strong>{n.name}</strong>
                 <span>{n.message}</span>
               </span>
