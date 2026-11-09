@@ -43,7 +43,7 @@ export default function OnePage() {
     <div className="gp">
       <header className={`gp-nav${navHidden ? " hide" : ""}`}>
         <div className="gp-nav-row">
-          <span className="gp-nav-name">Olaiwon Ganiyat</span>
+          <a className="gp-nav-name" href="#profile">ghanneeyyah</a>
           {!mobile && (
             <nav className="gp-nav-links" aria-label="Sections">
               {SECTIONS.map((s) => (

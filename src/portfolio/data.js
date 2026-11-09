@@ -157,9 +157,10 @@ export const EXPERIENCE = [
 ];
 
 export const LINKS = [
-  { name: "GitHub", handle: "@ghanneeyyah", href: "https://github.com/ghanneeyyah", bg: "#FFFFFF", rotate: -5, indent: "6%", icon: "code" },
-  { name: "LinkedIn", handle: "Ganiyat O.", href: "https://www.linkedin.com/in/ganiyat-o-32344b250", bg: "#FBF6C4", rotate: 4, indent: "22%", icon: "linkedin" },
-  { name: "Email", handle: "olaiwonganiyat18@gmail.com", href: "mailto:olaiwonganiyat18@gmail.com", bg: "#FF5A5F", rotate: -3, indent: "2%", icon: "mail" },
+  // Deeper, muted versions of the white / cream / coral pills, with light text.
+  { name: "GitHub", handle: "@ghanneeyyah", href: "https://github.com/ghanneeyyah", bg: "#2E2D66", fg: "#F2F0E8", rotate: -5, indent: "6%", icon: "code" },
+  { name: "LinkedIn", handle: "Ganiyat O.", href: "https://www.linkedin.com/in/ganiyat-o-32344b250", bg: "#5E5733", fg: "#F2F0E8", rotate: 4, indent: "22%", icon: "linkedin" },
+  { name: "Email", handle: "olaiwonganiyat18@gmail.com", href: "mailto:olaiwonganiyat18@gmail.com", bg: "#8E3539", fg: "#F2F0E8", rotate: -3, indent: "2%", icon: "mail" },
 ];
 
 export const NOTE_COLOURS = ["#FBF6C4", "#B7F7A6", "#F9C9AD", "#FFFFFF", "#9AA0F5"];

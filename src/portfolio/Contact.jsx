@@ -55,7 +55,7 @@ export default function Contact({ mobile }) {
           href={l.href}
           target={l.href.startsWith("http") ? "_blank" : undefined}
           rel={l.href.startsWith("http") ? "noreferrer" : undefined}
-          style={{ background: l.bg, rotate: `${mobile ? l.rotate / 2 : l.rotate}deg`, marginLeft: mobile ? (i === 1 ? 18 : 0) : l.indent, transitionDelay: `${0.2 + i * 0.12}s, ${0.2 + i * 0.12}s, 0s` }}
+          style={{ background: l.bg, color: l.fg, rotate: `${mobile ? l.rotate / 2 : l.rotate}deg`, marginLeft: mobile ? (i === 1 ? 18 : 0) : l.indent, transitionDelay: `${0.2 + i * 0.12}s, ${0.2 + i * 0.12}s, 0s` }}
         >
           <span className="gp-lglyph"><LinkIcon name={l.icon} size={mobile ? 20 : 22} /></span>
           <span>
